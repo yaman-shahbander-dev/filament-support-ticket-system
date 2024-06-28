@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PermissionsEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use App\Filament\Resources\UserResource\RelationManagers\RolesRelationManager;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -52,12 +54,12 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::UserEdit->value)),
+                Tables\Actions\DeleteAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::UserDelete->value)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::UserDelete->value)),
                 ]),
             ]);
     }

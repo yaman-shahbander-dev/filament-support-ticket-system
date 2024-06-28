@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => null,
             ],
             [
-                'name' => ucfirst(RolesEnum::Admin->value),
+                'name' => ucfirst(RolesEnum::Agent->value),
                 'email' => DatabaseTestEmailsEnum::Agent->value,
                 'password' => bcrypt('password'),
                 'remember_token' => null,

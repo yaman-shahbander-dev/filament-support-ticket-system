@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PermissionsEnum;
 use App\Enums\PriorityEnum;
 use App\Enums\StatusEnum;
 use App\Filament\Resources\TicketResource\Pages;
@@ -20,6 +21,7 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\TicketResource\RelationManagers\CategoriesRelationManager;
+use Illuminate\Support\Facades\Auth;
 
 class TicketResource extends Resource
 {
@@ -76,12 +78,12 @@ class TicketResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::CategoryEdit->value)),
+                Tables\Actions\DeleteAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::CategoryDelete->value)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::CategoryDelete->value)),
                 ]),
             ]);
     }

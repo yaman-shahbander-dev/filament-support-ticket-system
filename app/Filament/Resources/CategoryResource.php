@@ -18,6 +18,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Enums\PermissionsEnum;
 
 class CategoryResource extends Resource
 {
@@ -55,6 +57,7 @@ class CategoryResource extends Resource
                 TextColumn::make('slug'),
                 ToggleColumn::make('is_active')
                     ->label('Status')
+                    ->disabled(!Auth::user()->hasPermission(PermissionsEnum::CategoryEdit->value))
             ])
             ->filters([
                 //
@@ -65,7 +68,7 @@ class CategoryResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::CategoryDelete->value)),
                 ]),
             ]);
     }

@@ -50,4 +50,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function hasPermission(string $permission): bool
+    {
+        return $this
+            ->roles
+            ->pluck('permissions')
+            ->flatten()
+            ->pluck('name')
+            ->contains($permission);
+    }
 }
