@@ -4,10 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Enums\PermissionsEnum;
 use App\Enums\PriorityEnum;
+use App\Enums\RolesEnum;
+use App\Enums\ColorsEnum;
 use App\Enums\StatusEnum;
 use App\Filament\Resources\TicketResource\Pages;
 use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Models\Ticket;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,6 +25,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\TicketResource\RelationManagers\CategoriesRelationManager;
 use Illuminate\Support\Facades\Auth;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\SelectColumn;
 
 class TicketResource extends Resource
 {
@@ -48,7 +53,15 @@ class TicketResource extends Resource
                     ->required()
                     ->in(PriorityEnum::getValues()),
                 Select::make('assigned_to')
-                    ->relationship('assignedTo', 'name'),
+                    ->options(
+                        User::query()
+                            ->whereHas('roles', function (Builder $query) {
+                                return $query->where('name', RolesEnum::Agent->value);
+                            })
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    )
+                    ->required(),
                 Textarea::make('comment')
                     ->rows(3),
             ]);
@@ -59,23 +72,44 @@ class TicketResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->description(fn (Ticket $record): string => $record->description)
+                    ->description(fn (Ticket $record): ?string => $record?->description ?? null)
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('status')
-                    ->badge(),
+                SelectColumn::make('status')
+                    ->options(StatusEnum::getKeyValue()),
+//                TextColumn::make('status')
+//                    ->badge()
+//                    ->colors([
+//                        ColorsEnum::Warning->value => StatusEnum::Archived->value,
+//                        ColorsEnum::Danger->value => StatusEnum::Open->value,
+//                        ColorsEnum::Success->value => StatusEnum::Closed->value,
+//                    ]),
                 TextColumn::make('priority')
-                    ->badge(),
+                    ->badge()
+                    ->colors([
+                        ColorsEnum::Warning->value => PriorityEnum::Low->value,
+                        ColorsEnum::Success->value => PriorityEnum::Medium->value,
+                        ColorsEnum::Danger->value => PriorityEnum::High->value,
+                    ]),
                 TextColumn::make('assignedTo.name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('assignedBy.name')
                     ->searchable()
                     ->sortable(),
-                TextInputColumn::make('comment')
+                TextInputColumn::make('comment'),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options(StatusEnum::getKeyValue())
+                    ->placeholder('Filter By Status'),
+                SelectFilter::make('priority')
+                    ->options(PriorityEnum::getKeyValue())
+                    ->placeholder('Filter By Priority')
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::CategoryEdit->value)),
@@ -85,7 +119,11 @@ class TicketResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::CategoryDelete->value)),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+                return $user->hasRole(RolesEnum::Admin->value) ? $query : $query->where('assigned_to', $user->id);
+            });
     }
 
     public static function getRelations(): array

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TicketResource\Pages;
 use App\Filament\Resources\TicketResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Widgets\StatsOverview;
 
 class ListTickets extends ListRecords
 {
@@ -14,6 +15,13 @@ class ListTickets extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            StatsOverview::class
         ];
     }
 }

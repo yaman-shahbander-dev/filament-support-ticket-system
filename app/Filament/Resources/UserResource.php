@@ -17,12 +17,13 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use App\Filament\Resources\UserResource\RelationManagers\RolesRelationManager;
 use Illuminate\Support\Facades\Auth;
+use Filament\Tables\Filters\SelectFilter;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
     {
@@ -36,7 +37,8 @@ class UserResource extends Resource
                     ->required(),
                 TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->required()
+                    ->hiddenOn(['edit']),
             ]);
     }
 
@@ -48,10 +50,14 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
-                    ->searchable()
+                    ->searchable(),
+                TextColumn::make('roles.name')
+                    ->badge()
             ])
             ->filters([
-                //
+                SelectFilter::make('role')
+                    ->relationship('roles', 'name')
+                    ->preload()
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->hidden(!Auth::user()->hasPermission(PermissionsEnum::UserEdit->value)),

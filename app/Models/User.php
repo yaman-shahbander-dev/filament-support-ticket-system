@@ -60,4 +60,13 @@ class User extends Authenticatable
             ->pluck('name')
             ->contains($permission);
     }
+
+    public function hasRole(string $role): bool
+    {
+        return $this
+            ->roles
+            ->pluck('name')
+            ->flatten()
+            ->contains($role);
+    }
 }

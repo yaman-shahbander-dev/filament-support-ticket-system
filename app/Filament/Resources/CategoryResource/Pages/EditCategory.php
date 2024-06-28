@@ -16,4 +16,9 @@ class EditCategory extends EditRecord
 //            Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return "The category has been updated successfully!";
+    }
 }
