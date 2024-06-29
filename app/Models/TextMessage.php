@@ -15,7 +15,8 @@ class TextMessage extends Model
         'response',
         'sent_to',
         'sent_by',
-        'status'
+        'status',
+        'remarks'
     ];
 
     public function sentTo(): BelongsTo

@@ -27,6 +27,7 @@ use App\Filament\Resources\TicketResource\RelationManagers\CategoriesRelationMan
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\SelectColumn;
+use Filament\Forms\Components\FileUpload;
 
 class TicketResource extends Resource
 {
@@ -64,6 +65,8 @@ class TicketResource extends Resource
                     ->required(),
                 Textarea::make('comment')
                     ->rows(3),
+                FileUpload::make('attachment')
+
             ]);
     }
 
@@ -77,13 +80,6 @@ class TicketResource extends Resource
                     ->sortable(),
                 SelectColumn::make('status')
                     ->options(StatusEnum::getKeyValue()),
-//                TextColumn::make('status')
-//                    ->badge()
-//                    ->colors([
-//                        ColorsEnum::Warning->value => StatusEnum::Archived->value,
-//                        ColorsEnum::Danger->value => StatusEnum::Open->value,
-//                        ColorsEnum::Success->value => StatusEnum::Closed->value,
-//                    ]),
                 TextColumn::make('priority')
                     ->badge()
                     ->colors([
