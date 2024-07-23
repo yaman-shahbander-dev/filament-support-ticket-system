@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Filament\CustomWidgets\MetricWidget;
+use Illuminate\Contracts\Support\Htmlable;
+use App\Enums\DurationEnum;
+
+class {{ class }} extends MetricWidget
+{
+    protected string | Htmlable $label = '';
+
+    public function getValue()
+    {
+        return "";
+    }
+}

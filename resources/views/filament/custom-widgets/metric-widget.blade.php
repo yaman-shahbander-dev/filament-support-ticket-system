@@ -5,7 +5,7 @@
     $descriptionColor = $this->getDescriptionColor() ?? 'gray';
     $descriptionIcon = $this->getDescriptionIcon();
     $descriptionIconPosition = $this->getDescriptionIconPosition();
-    $dataChecksum = $this->generateDataChecksum();
+//    $dataChecksum = $this->generateDataChecksum();
     $tag = 'div';
 
     $descriptionIconClasses = \Illuminate\Support\Arr::toCssClasses([
