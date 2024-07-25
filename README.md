@@ -1,66 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Support Ticket System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+This project is an admin panel built using Laravel and the Filament package, designed to provide a comprehensive and user-friendly interface for managing various aspects of an application. The admin panel includes essential features such as category management, user administration, ticket handling, and role-based permissions. Additionally, it incorporates custom widgets and console commands to enhance functionality and streamline operations.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The panel is structured to facilitate easy management and visualization of data. With the use of stub files for generating class definitions, this project allows for quick and consistent creation of metric widgets and their overviews, providing valuable insights at a glance.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **Category Management**: Create, read, update, and delete categories for better organization of content.
 
-## Learning Laravel
+* **User Management**: Administer users with capabilities to manage roles and permissions effectively.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Ticket Management**: Handle support tickets efficiently, ensuring a smooth user experience.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Role-Based Permissions**: Implement granular control over user access with customizable roles and permissions.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* **Custom Widgets**: Enhance the dashboard with metric overview widgets that serve as wrappers for other widgets, providing a comprehensive view of key metrics.
 
-## Laravel Sponsors
+* **Console Commands**: Utilize console commands to easily create metric overview widgets and individual metric widgets, streamlining the development process.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **Relation Managers**: Manage relationships between different resources effortlessly, improving data integrity and accessibility.
 
-### Premium Partners
+## Installation
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. **Clone the repository**:
+      ```
+      git clone https://github.com/yaman-shahbander-dev/filament-support-ticket-system.git
+      ```
 
-## Contributing
+2. **Navigate to the project directory**:
+      ```
+      cd filament-support-ticket-system
+      ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Install dependencies**:
+      ```
+      composer install
+      ```
 
-## Code of Conduct
+4. **Create a new .env file and configure the environment variables**:
+      ```
+      cp .env.example .env
+      ```
+      Open the .env file and update the following settings:
+      
+      * **DB_CONNECTION**: Set the database connection type (e.g., mysql, postgresql, sqlite).
+      * **DB_HOST**, **DB_PORT**, **DB_DATABASE**, **DB_USERNAME**, **DB_PASSWORD**: Set the database connection details.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Generate an application key**:
+      ```
+      php artisan key:generate
+      ```
 
-## Security Vulnerabilities
+6. **Run the database migrations**:
+      ```
+      php artisan migrate
+      ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. **Seed the database (optional)**:
+      ```
+      php artisan db:seed
+      ```
 
-## License
+8. **Create a Filament User**:
+      ```
+      php artisan make:filament-user
+      ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+9. **Start the development server**:
+      ```
+      php artisan serve
+      ```
+
+10. **Access the Filament admin dashboard**:
+
+      Open your web browser and navigate to http://localhost/admin/login
+    
+      Use the Filament admin credentials you have provided in step eight
